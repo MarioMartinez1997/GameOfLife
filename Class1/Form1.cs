@@ -15,6 +15,7 @@ namespace Class1
         int sizeArr;
         bool[,] universe;
         bool[,] scratchpad;
+        bool stopTimer = false;
         Timer timer = new Timer();
         int generations = 0;
 
@@ -23,36 +24,36 @@ namespace Class1
             InitializeComponent();
 
             //universe[1, 1] = true;
-            sizeArr = 25;
+            sizeArr = 10;
             universe = new bool[sizeArr, sizeArr];
-            scratchpad = new bool[sizeArr, sizeArr];
             timer.Interval = 20;
             timer.Tick += Timer_Tick;
-            timer.Enabled = true;
+            scratchpad = new bool[sizeArr, sizeArr];
+
+            //timer.Enabled = true;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
-
             //call next generations
-            for (int i = 0; i < universe.GetLength(1); i++)
+            for (int i = 0; i < universe.GetLength(0); i++)
             {
-                for (int j = 0; j < universe.GetLength(0); j++)
+                for (int j = 0; j < universe.GetLength(1); j++)
                 {
                     int count = countNeighbors(i, j);
                     if (universe [ i , j ])
                     {
-                        if (count < 2 || count > 3)
+                        if (count < 2 ||  count > 3)
                         {
                             scratchpad[i, j] = false;
                         }
-                        else
+                        else if(count == 3 || count == 2)
                         {
                             scratchpad[i, j] = true;
                         }
                     }
-                    else
+                    else if(!universe[i,j])
                     {
                         if (count == 3)
                         {
@@ -60,28 +61,41 @@ namespace Class1
                         }
                     }
                 }
+                if (stopTimer == true)
+                {
+                    timer.Stop();
+                }
             }
-        
-
         generations++;
 
-            toolStripStatusLabel1.Text = "Generarions: " + generations.ToString();
+            universe = scratchpad;
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
 
             graphicsPanel1.Invalidate();
-
+        }
+        private void play_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+            stopTimer = false;
+        }
+        private void pause_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = false;
+        }
+        private void next_Click(object sender, EventArgs e)
+        {
+            timer.Enabled = true;
+            stopTimer = true;
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
-
-
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-
                     RectangleF r = RectangleF.Empty;
                     r.X = x * width;
                     r.Y = y * height;
@@ -96,12 +110,9 @@ namespace Class1
                     e.Graphics.DrawRectangle(Pens.Black, r.X, r.Y, r.Width, r.Height);
                 }
             }
-
         }
-
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
         {
-
             float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
@@ -110,8 +121,6 @@ namespace Class1
 
             universe[(int)x, (int)y] = !universe[(int)x, (int)y];
             graphicsPanel1.Invalidate();
-
-
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -123,11 +132,12 @@ namespace Class1
                     universe[x, y] = false;
                 }
             }
+            timer.Stop();
+            generations = 0;
             graphicsPanel1.Invalidate();
         }
 
         private int countNeighbors(int x, int y)
-
         {
             int count = 0;
 
@@ -154,35 +164,27 @@ namespace Class1
             if (x + 1 < universe.GetLength(0) && y + 1 < universe.GetLength(1))
             {
                 if (universe[x + 1, y + 1])
-                {
-                    count++;
-                }
+                {count++;}
             }
-            if (x+1 < universe.GetLength(0) && y-1 > 0)
+            if (x+1 < universe.GetLength(0) && y-1 >= 0)
             {
                 if (universe[ x+1 , y-1])
-                {
-                    count++;
-                }
+                {count++;}
             }
-            if (x - 1 > 0 && y + 1 < universe.GetLength(1))
+            if (x - 1 >= 0 && y + 1 < universe.GetLength(1))
             {
                 if (universe[x - 1, y + 1])
-                {
-                    count++;
-                }
+                {count++;}
             }
-            if (x - 1 > 0 && y - 1 > 0)
+            if (x - 1 >= 0 && y - 1 >= 0)
             {
                 if (universe[x - 1, y -1])
-                {
-                    count++;
-                }
+                {count++;}
             }
             return count;
         }
 
-    }
 
+    }
 }
 

@@ -68,6 +68,7 @@
             this.pause = new System.Windows.Forms.ToolStripButton();
             this.next = new System.Windows.Forms.ToolStripButton();
             this.graphicsPanel1 = new Class1.GraphicsPanel();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -352,6 +353,7 @@
             this.play,
             this.pause,
             this.next,
+            this.toolStripSeparator6,
             this.helpToolStripButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -367,6 +369,7 @@
             this.play.Name = "play";
             this.play.Size = new System.Drawing.Size(23, 22);
             this.play.Text = "Play";
+            this.play.Click += new System.EventHandler(this.play_Click);
             // 
             // pause
             // 
@@ -376,6 +379,7 @@
             this.pause.Name = "pause";
             this.pause.Size = new System.Drawing.Size(23, 22);
             this.pause.Text = "Pause";
+            this.pause.Click += new System.EventHandler(this.pause_Click);
             // 
             // next
             // 
@@ -385,6 +389,7 @@
             this.next.Name = "next";
             this.next.Size = new System.Drawing.Size(23, 22);
             this.next.Text = "Next";
+            this.next.Click += new System.EventHandler(this.next_Click);
             // 
             // graphicsPanel1
             // 
@@ -396,6 +401,11 @@
             this.graphicsPanel1.TabIndex = 3;
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
             // Form1
             // 
@@ -461,6 +471,7 @@
         private System.Windows.Forms.ToolStripButton play;
         private System.Windows.Forms.ToolStripButton pause;
         private System.Windows.Forms.ToolStripButton next;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 
