@@ -36,8 +36,34 @@ namespace Class1
             //throw new NotImplementedException();
 
             //call next generations
+            for (int i = 0; i < universe.GetLength(1); i++)
+            {
+                for (int j = 0; j < universe.GetLength(0); j++)
+                {
+                    int count = countNeighbors(i, j);
+                    if (universe [ i , j ])
+                    {
+                        if (count < 2 || count > 3)
+                        {
+                            scratchpad[i, j] = false;
+                        }
+                        else
+                        {
+                            scratchpad[i, j] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (count == 3)
+                        {
+                            scratchpad[i, j] = true;
+                        }
+                    }
+                }
+            }
+        
 
-            generations++;
+        generations++;
 
             toolStripStatusLabel1.Text = "Generarions: " + generations.ToString();
 
@@ -105,7 +131,7 @@ namespace Class1
         {
             int count = 0;
 
-            if (x + 1 <= universe.GetLength(0) )
+            if (x + 1 < universe.GetLength(0) )
             {
                 if ((universe[x + 1, y]))
                 { count++; }
@@ -115,16 +141,15 @@ namespace Class1
                 if (universe[x - 1, y])
                 {count++;}
             }
-            if (y - 1 > 0 && y + 1 <= universe.GetLength(1))
+            if (y - 1 > 0 )
             {
-                if (universe[x , y-1])
-                {
-                    count++;
-                }
-                if ((universe[x, y+1]))
-                {
-                    count++;
-                }
+                if (universe[x, y - 1])
+                {count++;}
+            }
+            if (y + 1 < universe.GetLength(1))
+            {           
+                if (universe[x, y+1])
+                {count++;}
             }
             if (x + 1 < universe.GetLength(0) && y + 1 < universe.GetLength(1))
             {
@@ -157,33 +182,7 @@ namespace Class1
             return count;
         }
 
-        private void Neighbors()
-        {
-            for (int i = 0; i < universe.GetLength(0); i++)
-            {
-                for (int j = 0; j < universe.GetLength(1); j++)
-                {
-                    generations = 0;
-                    for (int k = i -1 ; k < i+2 ; k++)
-                    {
-                        for (int l = j - 1; l < j + 2; l++)
-                        {
-                            if (k == 1 && l == j)
-                            {
-                                generations += 0;
-                            }
-                            else if (scratchpad [l,k] == true)
-                            {
-                                generations += 1;
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-
-
     }
+
 }
 
