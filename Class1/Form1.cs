@@ -12,10 +12,11 @@ namespace Class1
 {
     public partial class Form1 : Form
     {
-        int sizeArr;
+        int sizeArrX;
+        int sizeArrY;
         bool[,] universe;
         bool stopTimer = false; // bool to be able to step
-        bool[,] scratchpad;
+        //bool[,] scratchpad;
 
         Timer timer = new Timer();
         int generations = 0;
@@ -24,16 +25,19 @@ namespace Class1
         {
             InitializeComponent();
 
-            sizeArr = 10;
-            universe = new bool[sizeArr, sizeArr];
+            sizeArrX = 10;
+            sizeArrY = 10;
+            universe = new bool[sizeArrX, sizeArrY];
             timer.Interval = 20;
             timer.Tick += Timer_Tick;
-            scratchpad = new bool[sizeArr, sizeArr];
+            //scratchpad = new bool[sizeArrX, sizeArrY];
+
 
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            bool[,] scratchpad = new bool[universe.GetLength(0), universe.GetLength(1)];
             //throw new NotImplementedException();
             //call next generations
 
@@ -50,11 +54,11 @@ namespace Class1
                         {
                             scratchpad[i, j] = false;
                         }
-                        else if(count == 3 || count == 2)
+                        if(count == 3 || count == 2)
                         {
                             scratchpad[i, j] = true;
                         }
-                    }
+                   }
                     else if(!universe[i,j])
                     {
                         if (count == 3)
@@ -65,10 +69,7 @@ namespace Class1
                 }
 
                 //condition to be able to step always = false unless stepping
-                if (stopTimer == true)
-                {
-                    timer.Stop();
-                }
+                
             }
             #endregion
             generations++;
@@ -76,7 +77,13 @@ namespace Class1
             universe = scratchpad;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
 
+
             graphicsPanel1.Invalidate();
+            if (stopTimer == true)
+            {
+                timer.Stop();
+            }
+
         }
         private void play_Click(object sender, EventArgs e)
         {
@@ -101,6 +108,8 @@ namespace Class1
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
+                    int count = countNeighbors(x, y);
+
                     RectangleF r = RectangleF.Empty;
                     r.X = x * width;
                     r.Y = y * height;
@@ -109,12 +118,19 @@ namespace Class1
 
                     if (universe[x, y] == true)
                     {
-                        e.Graphics.FillRectangle(Brushes.Blue, r);
+                        e.Graphics.FillRectangle(Brushes.Black, r);
                     }
 
-                    e.Graphics.DrawRectangle(Pens.Black, r.X, r.Y, r.Width, r.Height);
+                    e.Graphics.DrawRectangle(Pens.Gray, r.X, r.Y, r.Width, r.Height);
+                    /* put number of neighbors
+                    if (count != 0)
+                    {
+                        e.Graphics.DrawString(count.ToString(), new Font(FontFamily.GenericSerif, height / 2, FontStyle.Bold), Brushes.Red, r.X,r.Y);
+
+                    }*/
                 }
             }
+
         }
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -151,12 +167,12 @@ namespace Class1
                 if ((universe[x + 1, y]))
                 { count++; }
             }
-            if (x - 1 > 0)
+            if (x - 1 >= 0)
             { 
                 if (universe[x - 1, y])
                 {count++;}
             }
-            if (y - 1 > 0 )
+            if (y - 1 >= 0 )
             {
                 if (universe[x, y - 1])
                 {count++;}
