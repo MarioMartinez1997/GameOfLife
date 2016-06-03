@@ -14,8 +14,9 @@ namespace Class1
     {
         int sizeArr;
         bool[,] universe;
+        bool stopTimer = false; // bool to be able to step
         bool[,] scratchpad;
-        bool stopTimer = false;
+
         Timer timer = new Timer();
         int generations = 0;
 
@@ -23,20 +24,21 @@ namespace Class1
         {
             InitializeComponent();
 
-            //universe[1, 1] = true;
             sizeArr = 10;
             universe = new bool[sizeArr, sizeArr];
             timer.Interval = 20;
             timer.Tick += Timer_Tick;
             scratchpad = new bool[sizeArr, sizeArr];
 
-            //timer.Enabled = true;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
             //call next generations
+
+            //Adding rules
+            #region Rules
             for (int i = 0; i < universe.GetLength(0); i++)
             {
                 for (int j = 0; j < universe.GetLength(1); j++)
@@ -61,12 +63,15 @@ namespace Class1
                         }
                     }
                 }
+
+                //condition to be able to step always = false unless stepping
                 if (stopTimer == true)
                 {
                     timer.Stop();
                 }
             }
-        generations++;
+            #endregion
+            generations++;
 
             universe = scratchpad;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
@@ -85,7 +90,7 @@ namespace Class1
         private void next_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
-            stopTimer = true;
+            stopTimer = true; //pause timer after each generation setting bool = true
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
