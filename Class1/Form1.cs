@@ -18,8 +18,11 @@ namespace Class1
         bool stopTimer = false; // bool to be able to step
         int RandNum;
         int timerInterval;
+        bool neighborCount = true;
+        bool gridlines = true;
 
-        Timer timer = new Timer();
+
+    Timer timer = new Timer();
         int generations = 0;
 
         public Form1()
@@ -43,6 +46,7 @@ namespace Class1
             optionsMenu.numHeight = sizeArrY;
             optionsMenu.numWidth = sizeArrX;
             optionsMenu.numTimer = timerInterval;
+            optionsMenu.BackColor = graphicsPanel1.BackColor;
 
 
             if (DialogResult.OK == optionsMenu.ShowDialog())
@@ -59,6 +63,8 @@ namespace Class1
                 timerInterval = optionsMenu.numTimer;
                 timer.Interval = timerInterval;
                 #endregion
+
+                graphicsPanel1.BackColor = optionsMenu.BackColor;
 
             }
 
@@ -152,13 +158,19 @@ namespace Class1
                     {
                         e.Graphics.FillRectangle(Brushes.Black, r);
                     }
-
-                    e.Graphics.DrawRectangle(Pens.Gray, r.X, r.Y, r.Width, r.Height);
-                    // put number of neighbors
-                    if (count != 0)
+                    if (gridlines == true)
                     {
-                        e.Graphics.DrawString(count.ToString(), new Font(FontFamily.GenericSerif, height / 2, FontStyle.Bold), Brushes.Red, r.X, r.Y);
+                        e.Graphics.DrawRectangle(Pens.Gray, r.X, r.Y, r.Width, r.Height);
+
                     }
+                    if (neighborCount == true)
+                    {
+                        if (count != 0)
+                        {
+                            e.Graphics.DrawString(count.ToString(), new Font(FontFamily.GenericSerif, height / 2, FontStyle.Bold), Brushes.Red, r.X, r.Y);
+                        }
+                    }
+
                 }
             }
 
@@ -260,7 +272,34 @@ namespace Class1
         {
             random(RandNum);
         }
-
+        private void neighborToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (neighborToolStripMenuItem.Checked)
+            {
+                neighborToolStripMenuItem.Checked = false;
+                neighborCount= false;
+            }
+            else
+            {
+                newToolStripMenuItem.Checked = true;
+                neighborCount = true;
+            }
+            graphicsPanel1.Invalidate();
+        }
+        private void gridVisibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gridVisibleToolStripMenuItem.Checked)
+            {
+                gridVisibleToolStripMenuItem.Checked = false;
+                gridlines = false;
+            }
+            else
+            {
+                gridVisibleToolStripMenuItem.Checked = true;
+                gridlines = true;
+            }
+            graphicsPanel1.Invalidate();
+        }
     }
 }
 

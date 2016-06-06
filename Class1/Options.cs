@@ -42,13 +42,13 @@ namespace Class1
 
         private void backgroundcolor_Click(object sender, EventArgs e)
         {
-            ColorDialog dlg = new ColorDialog();
+            ColorDialog backgroundColor = new ColorDialog();
 
-            dlg.Color = backgroundcolor.BackColor;
+            backgroundColor.Color = backgroundcolor.BackColor;
 
-            if (DialogResult.OK == dlg.ShowDialog())
+            if (DialogResult.OK == backgroundColor.ShowDialog())
             {
-                backgroundcolor.BackColor = dlg.Color;
+                backgroundcolor.BackColor = backgroundColor.Color;
             }
         }
     }
