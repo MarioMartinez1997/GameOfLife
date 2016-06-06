@@ -12,11 +12,12 @@ namespace Class1
 {
     public partial class Form1 : Form
     {
-        int sizeArrX;
+        int sizeArrX; 
         int sizeArrY;
         bool[,] universe;
         bool stopTimer = false; // bool to be able to step
-        //bool[,] scratchpad;
+        int RandNum;
+        int timerInterval;
 
         Timer timer = new Timer();
         int generations = 0;
@@ -25,13 +26,44 @@ namespace Class1
         {
             InitializeComponent();
 
+            Random rng = new Random();
             sizeArrX = 10;
             sizeArrY = 10;
+            timerInterval = 20;
             universe = new bool[sizeArrX, sizeArrY];
-            timer.Interval = 20;
+            timer.Interval = timerInterval;
             timer.Tick += Timer_Tick;
+            RandNum = rng.Next();
             //scratchpad = new bool[sizeArrX, sizeArrY];
+        }
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Options optionsMenu = new Options();
 
+            optionsMenu.numHeight = sizeArrY;
+            optionsMenu.numWidth = sizeArrX;
+            optionsMenu.numTimer = timerInterval;
+
+
+            if (DialogResult.OK == optionsMenu.ShowDialog())
+            {
+                #region Resize
+                if (sizeArrY != optionsMenu.numHeight || sizeArrX != optionsMenu.numWidth)
+                {
+                    sizeArrX = optionsMenu.numWidth;
+                    sizeArrY = optionsMenu.numHeight;
+                    universe = new bool[sizeArrX, sizeArrY];
+                }
+                #endregion
+                #region Timer
+                timerInterval = optionsMenu.numTimer;
+                timer.Interval = timerInterval;
+                #endregion
+
+            }
+
+
+            graphicsPanel1.Invalidate();
 
         }
 
@@ -122,12 +154,11 @@ namespace Class1
                     }
 
                     e.Graphics.DrawRectangle(Pens.Gray, r.X, r.Y, r.Width, r.Height);
-                    /* put number of neighbors
+                    // put number of neighbors
                     if (count != 0)
                     {
-                        e.Graphics.DrawString(count.ToString(), new Font(FontFamily.GenericSerif, height / 2, FontStyle.Bold), Brushes.Red, r.X,r.Y);
-
-                    }*/
+                        e.Graphics.DrawString(count.ToString(), new Font(FontFamily.GenericSerif, height / 2, FontStyle.Bold), Brushes.Red, r.X, r.Y);
+                    }
                 }
             }
 
@@ -205,6 +236,30 @@ namespace Class1
             return count;
         }
 
+        public void random(int s)
+        {
+            Random number = new Random(s);
+            for (int i = 0; i < universe.GetLength(0); i++)
+            {
+                for (int j = 0; j < universe.GetLength(1); j++)
+                {
+                    if (number.Next() % 2 == 1)
+                    {
+                        universe[i, j] = true; 
+                    }
+                    else
+                    {
+                        universe[i, j] = false;
+                    }
+                }
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            random(RandNum);
+        }
 
     }
 }
