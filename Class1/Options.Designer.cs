@@ -323,6 +323,7 @@
             this.Controls.Add(this.buttonCancelOptionsDialog);
             this.Controls.Add(this.buttonOkOptionsDialog);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Options";

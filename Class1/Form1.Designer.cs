@@ -285,6 +285,7 @@
             this.runToToolStripMenuItem.Name = "runToToolStripMenuItem";
             this.runToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.runToToolStripMenuItem.Text = "Run To";
+            this.runToToolStripMenuItem.Click += new System.EventHandler(this.runToToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 

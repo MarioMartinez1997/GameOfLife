@@ -20,6 +20,7 @@ namespace Class1
         int timerInterval;
         bool neighborCount = true;
         bool gridlines = true;
+        int rungen;
 
 
     Timer timer = new Timer();
@@ -72,6 +73,20 @@ namespace Class1
             graphicsPanel1.Invalidate();
 
         }
+        private void runToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RunTo toRun = new RunTo();
+
+            toRun.numRunToo = rungen;
+
+            if (DialogResult.OK == toRun.ShowDialog())
+            {
+
+                rungen = toRun.numRunToo;
+
+            }
+            timer.Start();
+        }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -117,11 +132,13 @@ namespace Class1
 
 
             graphicsPanel1.Invalidate();
-            if (stopTimer == true)
+            if (generations >= rungen)
             {
-                timer.Stop();
-            }
-
+                if (stopTimer == true)
+                {
+                    timer.Stop();
+                }
+            }           
         }
         private void play_Click(object sender, EventArgs e)
         {
@@ -197,7 +214,9 @@ namespace Class1
                 }
             }
             timer.Stop();
-            generations = 0;
+            generations = -1;
+            timer.Enabled = true;
+            stopTimer = true;
             graphicsPanel1.Invalidate();
         }
 
