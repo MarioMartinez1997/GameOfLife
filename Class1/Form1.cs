@@ -21,6 +21,7 @@ namespace Class1
         bool neighborCount = true;
         bool gridlines = true;
         int rungen;
+        int newRand;
 
 
     Timer timer = new Timer();
@@ -38,7 +39,25 @@ namespace Class1
             timer.Interval = timerInterval;
             timer.Tick += Timer_Tick;
             RandNum = rng.Next();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+
             //scratchpad = new bool[sizeArrX, sizeArrY];
+        }
+        private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RandomSeed fromNewSeed = new RandomSeed();
+
+            fromNewSeed.numRandomnumberseed = newRand;
+
+            if (DialogResult.OK == fromNewSeed.ShowDialog())
+            {
+                newRand = fromNewSeed.numRandomnumberseed;
+
+                random(newRand);
+                graphicsPanel1.Invalidate();
+
+            }
+
         }
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -65,6 +84,7 @@ namespace Class1
                 timer.Interval = timerInterval;
                 #endregion
 
+                //problems passing the colors
                 graphicsPanel1.BackColor = optionsMenu.BackColor;
 
             }
@@ -87,7 +107,6 @@ namespace Class1
             }
             timer.Start();
         }
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             bool[,] scratchpad = new bool[universe.GetLength(0), universe.GetLength(1)];

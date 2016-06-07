@@ -268,6 +268,7 @@
             this.textBox1.Location = new System.Drawing.Point(88, 31);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(105, 55);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "Waning! Changing boundary type may erase current cells";

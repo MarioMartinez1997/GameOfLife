@@ -15,7 +15,8 @@ namespace Class1
         public Options()
         {
             InitializeComponent();
-
+            numericUpDownTimerInterval.Maximum = Int32.MaxValue;
+            
         }
 
         public int numWidth
