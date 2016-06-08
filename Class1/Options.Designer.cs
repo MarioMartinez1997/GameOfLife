@@ -277,6 +277,7 @@
             // radioButtonInfinite
             // 
             this.radioButtonInfinite.AutoSize = true;
+            this.radioButtonInfinite.Checked = true;
             this.radioButtonInfinite.Location = new System.Drawing.Point(7, 55);
             this.radioButtonInfinite.Name = "radioButtonInfinite";
             this.radioButtonInfinite.Size = new System.Drawing.Size(56, 17);
@@ -292,7 +293,6 @@
             this.radioButtonToroidal.Name = "radioButtonToroidal";
             this.radioButtonToroidal.Size = new System.Drawing.Size(63, 17);
             this.radioButtonToroidal.TabIndex = 0;
-            this.radioButtonToroidal.TabStop = true;
             this.radioButtonToroidal.Text = "Toroidal";
             this.radioButtonToroidal.UseVisualStyleBackColor = true;
             // 

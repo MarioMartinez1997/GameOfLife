@@ -32,8 +32,8 @@ namespace Class1
             InitializeComponent();
 
             Random rng = new Random();
-            sizeArrX = 10;
-            sizeArrY = 10;
+            sizeArrX = 50;
+            sizeArrY = 50;
             timerInterval = 20;
             universe = new bool[sizeArrX, sizeArrY];
             timer.Interval = timerInterval;
@@ -41,7 +41,6 @@ namespace Class1
             RandNum = rng.Next();
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
 
-            //scratchpad = new bool[sizeArrX, sizeArrY];
         }
         private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -66,7 +65,7 @@ namespace Class1
             optionsMenu.numHeight = sizeArrY;
             optionsMenu.numWidth = sizeArrX;
             optionsMenu.numTimer = timerInterval;
-            optionsMenu.BackColor = graphicsPanel1.BackColor;
+            optionsMenu.pBackGroundColor = graphicsPanel1.BackColor;
 
 
             if (DialogResult.OK == optionsMenu.ShowDialog())
@@ -85,7 +84,7 @@ namespace Class1
                 #endregion
 
                 //problems passing the colors
-                graphicsPanel1.BackColor = optionsMenu.BackColor;
+                graphicsPanel1.BackColor = optionsMenu.pBackGroundColor;
 
             }
 
@@ -213,14 +212,23 @@ namespace Class1
         }
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
         {
-            float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-            float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            if (e.Button == MouseButtons.Left)
+            {                
+                float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+                float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
-            float x = e.X / width;
-            float y = e.Y / height;
+                float x = e.X / width;
+                float y = e.Y / height;
 
-            universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+                universe[(int)x, (int)y] = !universe[(int)x, (int)y];
+            }
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Show(graphicsPanel1,e.Location);
+
+            }
             graphicsPanel1.Invalidate();
+
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -337,6 +345,12 @@ namespace Class1
                 gridlines = true;
             }
             graphicsPanel1.Invalidate();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 about = new AboutBox1();
+            about.Show();
         }
     }
 }

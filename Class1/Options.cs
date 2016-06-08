@@ -52,5 +52,12 @@ namespace Class1
                 backgroundcolor.BackColor = backgroundColor.Color;
             }
         }
+        public Color pBackGroundColor
+        {
+            get
+            { return backgroundcolor.BackColor; }
+            set
+            { backgroundcolor.BackColor = value; }
+        }
     }
 }
