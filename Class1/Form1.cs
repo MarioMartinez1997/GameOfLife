@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,19 +13,21 @@ namespace Class1
 {
     public partial class Form1 : Form
     {
-        int sizeArrX; 
+        int sizeArrX;
         int sizeArrY;
         bool[,] universe;
         bool stopTimer = false; // bool to be able to step
         int RandNum;
+        bool[,] scratchpad;
         int timerInterval;
         bool neighborCount = true;
         bool gridlines = true;
         int rungen;
         int newRand;
-
-
-    Timer timer = new Timer();
+        Color cellColor;
+        Color x10CellColor;
+        Color gridlineColor;
+        Timer timer = new Timer();
         int generations = 0;
 
         public Form1()
@@ -39,8 +42,95 @@ namespace Class1
             timer.Interval = timerInterval;
             timer.Tick += Timer_Tick;
             RandNum = rng.Next();
+            cellColor = Color.Black;
+            x10CellColor = Color.Blue;
+            gridlineColor = Color.Gray;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
 
+
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "Cell Files|*.*|Cell|*.cells";
+            fileDialog.FilterIndex = 2;
+            if (DialogResult.OK == fileDialog.ShowDialog())
+            {
+                StreamReader reader = new StreamReader(fileDialog.FileName);
+                int xLength = 0;
+                int yLength = 0;
+                int yPos = 0;
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    if (row[0] != 'O' && row[0] != '.')
+                    { /* ignoring*/ }
+                    else
+                    {
+                        yLength++;
+                        xLength = row.Length;
+                    }
+                }
+                newToolStripMenuItem_Click(sender, e);
+                universe = new bool[xLength, yLength];
+                scratchpad = new bool[xLength, yLength];
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                while (!reader.EndOfStream)
+                {
+                    string row = reader.ReadLine();
+                    if (row[0] != 'O' && row[0] != '.')
+                    {
+                    }
+                    else
+                    {
+                        for (int xPos = 0; xPos < row.Length; xPos++)
+                        {
+                            if (row[xPos] == '.')
+                            {
+                                scratchpad[xPos, yPos] = false;
+                            }
+                            if (row[xPos] == 'O')
+                            {
+                                scratchpad[xPos, yPos] = true;
+                            }
+                        }
+                        yPos++;
+                    }
+                }
+                reader.Close();
+                bool[,] temp = universe;
+                universe = scratchpad;
+                scratchpad = temp;
+                scratchpad = new bool[xLength, yLength];
+                sizeArrX = xLength;
+                sizeArrY = yLength;
+                graphicsPanel1.Invalidate();
+            }
+        }
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFD = new SaveFileDialog();
+            saveFD.InitialDirectory = Application.StartupPath;
+            saveFD.Filter = "Cells Files|*.*|Cell|*.cells";
+            if (saveFD.ShowDialog() == DialogResult.OK)
+            {
+
+                StreamWriter str = new StreamWriter(saveFD.FileName);
+                for (int i = 0; i < universe.GetLength(1); i++)
+                {
+                    StringBuilder String = new StringBuilder();
+                    for (int j = 0; j < universe.GetLength(0); j++)
+                    {
+                        if (universe[j, i] == true)
+                        { String.Append('O'); }
+                        else
+                        { String.Append('.'); }
+                    }
+                    str.WriteLine(String);
+                }
+                str.Close();
+            }
         }
         private void fromNewSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -66,8 +156,11 @@ namespace Class1
             optionsMenu.numWidth = sizeArrX;
             optionsMenu.numTimer = timerInterval;
             optionsMenu.pBackGroundColor = graphicsPanel1.BackColor;
+            optionsMenu.pLiveCellColor = cellColor;
+            optionsMenu.pGridx10Color = x10CellColor;
+            optionsMenu.pGridColor = gridlineColor;
 
-
+            //fillrectangle = new Brushes(Color.Violet);
             if (DialogResult.OK == optionsMenu.ShowDialog())
             {
                 #region Resize
@@ -85,7 +178,9 @@ namespace Class1
 
                 //problems passing the colors
                 graphicsPanel1.BackColor = optionsMenu.pBackGroundColor;
-
+                cellColor = optionsMenu.pLiveCellColor;
+                x10CellColor = optionsMenu.pGridx10Color;
+                gridlineColor = optionsMenu.pGridColor;
             }
 
 
@@ -108,10 +203,9 @@ namespace Class1
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            bool[,] scratchpad = new bool[universe.GetLength(0), universe.GetLength(1)];
+            scratchpad = new bool[universe.GetLength(0), universe.GetLength(1)];
             //throw new NotImplementedException();
             //call next generations
-
             //Adding rules
             #region Rules
             for (int i = 0; i < universe.GetLength(0); i++)
@@ -119,18 +213,18 @@ namespace Class1
                 for (int j = 0; j < universe.GetLength(1); j++)
                 {
                     int count = countNeighbors(i, j);
-                    if (universe [ i , j ])
+                    if (universe[i, j])
                     {
-                        if (count < 2 ||  count > 3)
+                        if (count < 2 || count > 3)
                         {
                             scratchpad[i, j] = false;
                         }
-                        if(count == 3 || count == 2)
+                        if (count == 3 || count == 2)
                         {
                             scratchpad[i, j] = true;
                         }
-                   }
-                    else if(!universe[i,j])
+                    }
+                    else if (!universe[i, j])
                     {
                         if (count == 3)
                         {
@@ -140,7 +234,7 @@ namespace Class1
                 }
 
                 //condition to be able to step always = false unless stepping
-                
+
             }
             #endregion
             generations++;
@@ -156,7 +250,7 @@ namespace Class1
                 {
                     timer.Stop();
                 }
-            }           
+            }
         }
         private void play_Click(object sender, EventArgs e)
         {
@@ -172,9 +266,11 @@ namespace Class1
             timer.Enabled = true;
             stopTimer = true; //pause timer after each generation setting bool = true
         }
-
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
+            SolidBrush cellbrush = new SolidBrush(cellColor);
+            Pen x10 = new Pen(x10CellColor, 2.5f);
+            Pen colorgridlines = new Pen(gridlineColor, 1.0f);
             float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -189,13 +285,18 @@ namespace Class1
                     r.Width = width;
                     r.Height = height;
 
+                    if (x % 10 == 0 && y % 10 == 0)
+                    {
+                        e.Graphics.DrawRectangle(x10, r.X, r.Y, r.Width * 10, r.Height * 10);
+                    }
+
                     if (universe[x, y] == true)
                     {
-                        e.Graphics.FillRectangle(Brushes.Black, r);
+                        e.Graphics.FillRectangle(cellbrush, r);
                     }
                     if (gridlines == true)
                     {
-                        e.Graphics.DrawRectangle(Pens.Gray, r.X, r.Y, r.Width, r.Height);
+                        e.Graphics.DrawRectangle(colorgridlines, r.X, r.Y, r.Width, r.Height);
 
                     }
                     if (neighborCount == true)
@@ -213,7 +314,7 @@ namespace Class1
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {                
+            {
                 float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
                 float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
@@ -224,13 +325,12 @@ namespace Class1
             }
             if (e.Button == MouseButtons.Right)
             {
-                contextMenuStrip1.Show(graphicsPanel1,e.Location);
+                contextMenuStrip1.Show(graphicsPanel1, e.Location);
 
             }
             graphicsPanel1.Invalidate();
 
         }
-
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -246,54 +346,52 @@ namespace Class1
             stopTimer = true;
             graphicsPanel1.Invalidate();
         }
-
         private int countNeighbors(int x, int y)
         {
             int count = 0;
 
-            if (x + 1 < universe.GetLength(0) )
+            if (x + 1 < universe.GetLength(0))
             {
                 if ((universe[x + 1, y]))
                 { count++; }
             }
             if (x - 1 >= 0)
-            { 
+            {
                 if (universe[x - 1, y])
-                {count++;}
+                { count++; }
             }
-            if (y - 1 >= 0 )
+            if (y - 1 >= 0)
             {
                 if (universe[x, y - 1])
-                {count++;}
+                { count++; }
             }
             if (y + 1 < universe.GetLength(1))
-            {           
-                if (universe[x, y+1])
-                {count++;}
+            {
+                if (universe[x, y + 1])
+                { count++; }
             }
             if (x + 1 < universe.GetLength(0) && y + 1 < universe.GetLength(1))
             {
                 if (universe[x + 1, y + 1])
-                {count++;}
+                { count++; }
             }
-            if (x+1 < universe.GetLength(0) && y-1 >= 0)
+            if (x + 1 < universe.GetLength(0) && y - 1 >= 0)
             {
-                if (universe[ x+1 , y-1])
-                {count++;}
+                if (universe[x + 1, y - 1])
+                { count++; }
             }
             if (x - 1 >= 0 && y + 1 < universe.GetLength(1))
             {
                 if (universe[x - 1, y + 1])
-                {count++;}
+                { count++; }
             }
             if (x - 1 >= 0 && y - 1 >= 0)
             {
-                if (universe[x - 1, y -1])
-                {count++;}
+                if (universe[x - 1, y - 1])
+                { count++; }
             }
             return count;
         }
-
         public void random(int s)
         {
             Random number = new Random(s);
@@ -303,7 +401,7 @@ namespace Class1
                 {
                     if (number.Next() % 2 == 1)
                     {
-                        universe[i, j] = true; 
+                        universe[i, j] = true;
                     }
                     else
                     {
@@ -313,7 +411,6 @@ namespace Class1
             }
             graphicsPanel1.Invalidate();
         }
-
         private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             random(RandNum);
@@ -323,7 +420,7 @@ namespace Class1
             if (neighborToolStripMenuItem.Checked)
             {
                 neighborToolStripMenuItem.Checked = false;
-                neighborCount= false;
+                neighborCount = false;
             }
             else
             {
@@ -346,12 +443,15 @@ namespace Class1
             }
             graphicsPanel1.Invalidate();
         }
-
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox1 about = new AboutBox1();
             about.Show();
         }
-    }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }       
+    }    
 }
 

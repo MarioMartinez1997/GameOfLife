@@ -16,9 +16,8 @@ namespace Class1
         {
             InitializeComponent();
             numericUpDownTimerInterval.Maximum = Int32.MaxValue;
-            
+            livecellcolor.BackColor = Color.Black;
         }
-
         public int numWidth
         {
             get
@@ -51,13 +50,70 @@ namespace Class1
             {
                 backgroundcolor.BackColor = backgroundColor.Color;
             }
-        }
+        }   
         public Color pBackGroundColor
         {
             get
             { return backgroundcolor.BackColor; }
             set
             { backgroundcolor.BackColor = value; }
+        }
+
+        private void livecellcolor_Click(object sender, EventArgs e)
+        {
+            ColorDialog cellcolor = new ColorDialog();
+
+            cellcolor.Color = livecellcolor.BackColor;
+            
+
+            if (DialogResult.OK == cellcolor.ShowDialog())
+            {
+                livecellcolor.BackColor = cellcolor.Color;
+            }
+        }
+        public Color pLiveCellColor
+        {
+            get
+            { return livecellcolor.BackColor; }
+            set
+            { livecellcolor.BackColor = value; }
+        }
+
+        private void gridx10_Click(object sender, EventArgs e)
+        {
+            ColorDialog gridx10 = new ColorDialog();
+            gridx10.Color = gridx10Color.BackColor;
+
+            if (DialogResult.OK == gridx10.ShowDialog())
+            {
+                gridx10Color.BackColor = gridx10.Color;
+            }
+        }
+        public Color pGridx10Color
+        {
+            get
+            { return gridx10Color.BackColor; }
+            set
+            { gridx10Color.BackColor = value; }
+        }
+
+        private void GridColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog gColor = new ColorDialog();
+            gColor.Color = GridColor.BackColor;
+
+            if (DialogResult.OK == gColor.ShowDialog())
+            {
+                GridColor.BackColor = gColor.Color;
+            }
+        }
+
+        public Color pGridColor
+        {
+            get
+            { return GridColor.BackColor; }
+            set
+            { GridColor.BackColor = value; }
         }
     }
 }

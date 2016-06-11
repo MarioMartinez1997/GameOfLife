@@ -43,7 +43,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.livecellcolor = new System.Windows.Forms.Button();
             this.backgroundcolor = new System.Windows.Forms.Button();
-            this.gridx10 = new System.Windows.Forms.Button();
+            this.gridx10Color = new System.Windows.Forms.Button();
             this.GridColor = new System.Windows.Forms.Button();
             this.buttonResetColorOption = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -146,7 +146,7 @@
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.livecellcolor);
             this.tabPage2.Controls.Add(this.backgroundcolor);
-            this.tabPage2.Controls.Add(this.gridx10);
+            this.tabPage2.Controls.Add(this.gridx10Color);
             this.tabPage2.Controls.Add(this.GridColor);
             this.tabPage2.Controls.Add(this.buttonResetColorOption);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -201,6 +201,7 @@
             this.livecellcolor.Size = new System.Drawing.Size(43, 23);
             this.livecellcolor.TabIndex = 7;
             this.livecellcolor.UseVisualStyleBackColor = false;
+            this.livecellcolor.Click += new System.EventHandler(this.livecellcolor_Click);
             // 
             // backgroundcolor
             // 
@@ -212,14 +213,15 @@
             this.backgroundcolor.UseVisualStyleBackColor = false;
             this.backgroundcolor.Click += new System.EventHandler(this.backgroundcolor_Click);
             // 
-            // gridx10
+            // gridx10Color
             // 
-            this.gridx10.BackColor = System.Drawing.Color.Gray;
-            this.gridx10.Location = new System.Drawing.Point(15, 46);
-            this.gridx10.Name = "gridx10";
-            this.gridx10.Size = new System.Drawing.Size(43, 23);
-            this.gridx10.TabIndex = 5;
-            this.gridx10.UseVisualStyleBackColor = false;
+            this.gridx10Color.BackColor = System.Drawing.Color.Gray;
+            this.gridx10Color.Location = new System.Drawing.Point(15, 46);
+            this.gridx10Color.Name = "gridx10Color";
+            this.gridx10Color.Size = new System.Drawing.Size(43, 23);
+            this.gridx10Color.TabIndex = 5;
+            this.gridx10Color.UseVisualStyleBackColor = false;
+            this.gridx10Color.Click += new System.EventHandler(this.gridx10_Click);
             // 
             // GridColor
             // 
@@ -229,6 +231,7 @@
             this.GridColor.Size = new System.Drawing.Size(43, 23);
             this.GridColor.TabIndex = 4;
             this.GridColor.UseVisualStyleBackColor = false;
+            this.GridColor.Click += new System.EventHandler(this.GridColor_Click);
             // 
             // buttonResetColorOption
             // 
@@ -365,7 +368,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button livecellcolor;
         private System.Windows.Forms.Button backgroundcolor;
-        private System.Windows.Forms.Button gridx10;
+        private System.Windows.Forms.Button gridx10Color;
         private System.Windows.Forms.Button GridColor;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButtonInfinite;
