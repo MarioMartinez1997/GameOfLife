@@ -22,6 +22,7 @@ namespace Class1
         int timerInterval;
         bool neighborCount = true;
         bool gridlines = true;
+        bool x10lines = true;
         int rungen;
         int newRand;
         Color cellColor;
@@ -35,9 +36,15 @@ namespace Class1
             InitializeComponent();
 
             Random rng = new Random();
+            graphicsPanel1.BackColor = Properties.Settings.Default.BackgroundColor;
+
+            
             sizeArrX = 50;
             sizeArrY = 50;
             timerInterval = 20;
+            sizeArrX = Properties.Settings.Default.SizeArrayX;
+            sizeArrY = Properties.Settings.Default.SizeArrayY;
+            timerInterval = Properties.Settings.Default.Timer;
             universe = new bool[sizeArrX, sizeArrY];
             timer.Interval = timerInterval;
             timer.Tick += Timer_Tick;
@@ -46,10 +53,21 @@ namespace Class1
             x10CellColor = Color.Blue;
             gridlineColor = Color.Gray;
             toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
-
-
+            gridlineColor = Properties.Settings.Default.GridLineColor;
+            x10CellColor = Properties.Settings.Default.X10CellColor;
+            cellColor = Properties.Settings.Default.CellColor;
         }
-
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.BackgroundColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.GridLineColor = gridlineColor;
+            Properties.Settings.Default.X10CellColor = x10CellColor;
+            Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.SizeArrayX = sizeArrX;
+            Properties.Settings.Default.SizeArrayY = sizeArrY;
+            Properties.Settings.Default.Timer = timerInterval;
+            Properties.Settings.Default.Save();
+        }
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
@@ -269,8 +287,8 @@ namespace Class1
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             SolidBrush cellbrush = new SolidBrush(cellColor);
-            Pen x10 = new Pen(x10CellColor, 2.5f);
-            Pen colorgridlines = new Pen(gridlineColor, 1.0f);
+            Pen x10 = new Pen(x10CellColor, 3.0f);
+            Pen colorgridlines = new Pen(gridlineColor, 0.5f);
             float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -285,10 +303,14 @@ namespace Class1
                     r.Width = width;
                     r.Height = height;
 
-                    if (x % 10 == 0 && y % 10 == 0)
+                    if (x10lines == true)
                     {
-                        e.Graphics.DrawRectangle(x10, r.X, r.Y, r.Width * 10, r.Height * 10);
+                        if (x % 10 == 0 && y % 10 == 0)
+                        {
+                            e.Graphics.DrawRectangle(x10, r.X, r.Y, r.Width * 10, r.Height * 10);
+                        }
                     }
+                    
 
                     if (universe[x, y] == true)
                     {
@@ -435,6 +457,7 @@ namespace Class1
             {
                 gridVisibleToolStripMenuItem.Checked = false;
                 gridlines = false;
+                x10lines = false;
             }
             else
             {
@@ -450,8 +473,11 @@ namespace Class1
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
-        }       
+            this.Close();
+
+        }
+
+
     }    
 }
 
