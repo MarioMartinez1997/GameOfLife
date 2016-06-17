@@ -282,6 +282,7 @@
             this.headsUpVisibleToolStripMenuItem.Name = "headsUpVisibleToolStripMenuItem";
             this.headsUpVisibleToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.headsUpVisibleToolStripMenuItem.Text = "Heads Up Visible";
+            this.headsUpVisibleToolStripMenuItem.Click += new System.EventHandler(this.headsUpVisibleToolStripMenuItem_Click);
             // 
             // runToolStripMenuItem
             // 

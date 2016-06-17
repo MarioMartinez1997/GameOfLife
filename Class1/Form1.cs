@@ -23,6 +23,7 @@ namespace Class1
         bool neighborCount = true;
         bool gridlines = true;
         bool x10lines = true;
+        bool menu = true;
         int rungen;
         int newRand;
         Color cellColor;
@@ -36,9 +37,7 @@ namespace Class1
             InitializeComponent();
 
             Random rng = new Random();
-            graphicsPanel1.BackColor = Properties.Settings.Default.BackgroundColor;
-
-            
+            graphicsPanel1.BackColor = Properties.Settings.Default.BackgroundColor;           
             sizeArrX = 50;
             sizeArrY = 50;
             timerInterval = 20;
@@ -52,7 +51,7 @@ namespace Class1
             cellColor = Color.Black;
             x10CellColor = Color.Blue;
             gridlineColor = Color.Gray;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + "  Cells: " + cellsCount() + "  Seed: " + RandNum;
             gridlineColor = Properties.Settings.Default.GridLineColor;
             x10CellColor = Properties.Settings.Default.X10CellColor;
             cellColor = Properties.Settings.Default.CellColor;
@@ -258,7 +257,7 @@ namespace Class1
             generations++;
 
             universe = scratchpad;
-            toolStripStatusLabel1.Text = "Generations: " + generations.ToString();
+            toolStripStatusLabel1.Text = "Generations: " + generations.ToString() + "  Cells: " + cellsCount() + "  Seed: " + RandNum;
 
 
             graphicsPanel1.Invalidate();
@@ -291,6 +290,9 @@ namespace Class1
             Pen colorgridlines = new Pen(gridlineColor, 0.5f);
             float width = (float)graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             float height = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+
+
+
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
@@ -331,6 +333,12 @@ namespace Class1
 
                 }
             }
+            if (menu == true)
+            {
+                e.Graphics.DrawString("Generations: " + generations.ToString() + "\nCells: " + cellsCount() + "\nSeed: " + RandNum + "\nUniverse Size: {Width: " + sizeArrX + ", Height: " + sizeArrY + "}",
+               new Font(FontFamily.GenericSansSerif, (sizeArrY / 10) + 10, FontStyle.Italic), Brushes.Red, 2, graphicsPanel1.Height - sizeArrY - (height + 30));
+            }
+           
 
         }
         private void graphicsPanel1_MouseClick(object sender, MouseEventArgs e)
@@ -433,6 +441,21 @@ namespace Class1
             }
             graphicsPanel1.Invalidate();
         }
+        public int cellsCount()
+        {
+            int countCells = 0;
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x, y] == true)
+                    {
+                        ++countCells;
+                    }
+                }
+            } return countCells;
+        }
         private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             random(RandNum);
@@ -458,6 +481,7 @@ namespace Class1
                 gridVisibleToolStripMenuItem.Checked = false;
                 gridlines = false;
                 x10lines = false;
+
             }
             else
             {
@@ -477,7 +501,20 @@ namespace Class1
 
         }
 
-
+        private void headsUpVisibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (neighborToolStripMenuItem.Checked)
+            {
+                neighborToolStripMenuItem.Checked = false;
+                menu = false;
+            }
+            else
+            {
+                newToolStripMenuItem.Checked = true;
+                menu = true;
+            }
+            graphicsPanel1.Invalidate();
+        }
     }    
 }
 

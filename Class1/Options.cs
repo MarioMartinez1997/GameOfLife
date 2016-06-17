@@ -107,7 +107,6 @@ namespace Class1
                 GridColor.BackColor = gColor.Color;
             }
         }
-
         public Color pGridColor
         {
             get
@@ -115,5 +114,23 @@ namespace Class1
             set
             { GridColor.BackColor = value; }
         }
+        private void relod_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+            pBackGroundColor = Properties.Settings.Default.BackgroundColor;
+            pGridColor = Properties.Settings.Default.GridLineColor;
+            pGridx10Color = Properties.Settings.Default.X10CellColor;
+            pLiveCellColor = Properties.Settings.Default.CellColor;
+        }
+        private void buttonResetColorOption_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            pBackGroundColor = Properties.Settings.Default.BackgroundColor;
+            pGridColor = Properties.Settings.Default.GridLineColor;
+            pGridx10Color = Properties.Settings.Default.X10CellColor;
+            pLiveCellColor = Properties.Settings.Default.CellColor;
+        }
+
+
     }
 }

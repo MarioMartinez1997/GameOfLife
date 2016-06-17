@@ -53,6 +53,7 @@
             this.radioButtonToroidal = new System.Windows.Forms.RadioButton();
             this.buttonOkOptionsDialog = new System.Windows.Forms.Button();
             this.buttonCancelOptionsDialog = new System.Windows.Forms.Button();
+            this.relod = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeightUniverseCells)).BeginInit();
@@ -140,6 +141,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.relod);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.label6);
             this.tabPage2.Controls.Add(this.label5);
@@ -241,6 +243,7 @@
             this.buttonResetColorOption.TabIndex = 3;
             this.buttonResetColorOption.Text = "Reset";
             this.buttonResetColorOption.UseVisualStyleBackColor = true;
+            this.buttonResetColorOption.Click += new System.EventHandler(this.buttonResetColorOption_Click);
             // 
             // tabPage3
             // 
@@ -319,6 +322,16 @@
             this.buttonCancelOptionsDialog.Text = "Cancel";
             this.buttonCancelOptionsDialog.UseVisualStyleBackColor = true;
             // 
+            // relod
+            // 
+            this.relod.Location = new System.Drawing.Point(95, 254);
+            this.relod.Name = "relod";
+            this.relod.Size = new System.Drawing.Size(75, 23);
+            this.relod.TabIndex = 12;
+            this.relod.Text = "Relod";
+            this.relod.UseVisualStyleBackColor = true;
+            this.relod.Click += new System.EventHandler(this.relod_Click);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,5 +387,6 @@
         private System.Windows.Forms.RadioButton radioButtonInfinite;
         private System.Windows.Forms.RadioButton radioButtonToroidal;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button relod;
     }
 }

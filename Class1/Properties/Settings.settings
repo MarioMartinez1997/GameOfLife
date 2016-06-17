@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="BackgroundColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Red</Value>
+      <Value Profile="(Default)">White</Value>
     </Setting>
     <Setting Name="CellColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
